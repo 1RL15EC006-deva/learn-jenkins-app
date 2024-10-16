@@ -1,12 +1,38 @@
-pipeline {
+pipeline
+{
     agent any
-    stages {
-        stage('Build') {
-            steps {
-                dir('/Users/ddurg/AppData/Roaming/npm') {
-                    bat 'npm --version'
-                    bat 'newman -version'
+
+    stages
+    {
+        stage('Run the postman')
+        {
+            steps
+            {
+                dir('/Users/ddurg/AppData/Roaming/npm')
+                {
+                bat 'newman run devanand.json -r htmlextra --reporter-htmlextra-export newman_reports/report.html'
+                archiveArtifacts artifacts: 'newman_reports/report.html', allowEmptyArchive: true
+                                // Send the email with the HTML report
                 }
+            }
+        }
+        stage('Sending the email')
+        {
+            steps
+            {
+                dir('/Users/ddurg/AppData/Roaming/npm')
+                {
+                emailext (
+                    subject: "Newman-API Test Report",
+                    body: "Please find the attached Newman HTML report.",
+                    attachLog: true,
+                    attachmentsPattern: 'newman_reports/report.html',
+                    to: 'sitdpf2020@gmail.com'
+                )
+
+                }
+
+
             }
         }
     }
