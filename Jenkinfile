@@ -8,8 +8,6 @@ pipeline
         {
             steps
             {
-                dir('/Users/ddurg/AppData/Roaming/npm')
-                {
                 bat '''
                     npm --version
                     npm ci
