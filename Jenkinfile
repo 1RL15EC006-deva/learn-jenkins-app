@@ -1,11 +1,12 @@
 pipeline {
     agent any
-
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
-                echo 'Hello World Devanand'
+                dir('/Users/ddurg/AppData/Roaming/npm') {
+                    bat 'npm --version'
+                    bat 'newman -version'
+                }
             }
         }
     }
